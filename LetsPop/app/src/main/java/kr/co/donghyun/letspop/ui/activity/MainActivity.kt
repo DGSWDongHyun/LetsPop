@@ -4,15 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -42,31 +40,36 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainPage(viewModel.popularData.observeAsState().value)
+                    MainPage(
+                        viewModel.popularData.observeAsState().value,
+                        onLikeMethod = { viewModel.likePopSong() },
+                        onDislikeMethod = { viewModel.dislikePopSong() }
+                    )
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainPage(popularData: PopularData?) {
+fun MainPage(popularData: PopularData?, onLikeMethod : () -> Unit = {}, onDislikeMethod : () -> Unit = {}) {
     val context = LocalContext.current
     Column {
         Card(
             shape = RoundedCornerShape(8.dp),
-            backgroundColor = Color.White,
             modifier = Modifier
                 .padding(16.dp)
-                .fillMaxWidth()
-                .clickable {
-                    if(popularData != null) {
-                        context.startActivity(Intent(Intent.ACTION_VIEW).apply {
-                            data = Uri.parse(popularData.link)
-                            `package` = "com.google.android.youtube"
-                        })
-                    }
+                .fillMaxWidth(),
+            onClick = {
+                if (popularData != null) {
+                    context.startActivity(Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(popularData.link)
+                        `package` = "com.google.android.youtube"
+                    })
                 }
+            }
+
         ) {
             Column(
                 modifier = Modifier
@@ -76,6 +79,45 @@ fun MainPage(popularData: PopularData?) {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(text = if(popularData != null) "\uD83D\uDD25 ${popularData.name}" else "Loading..")
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Card(
+                        modifier = Modifier
+                            .width(55.dp)
+                            .height(55.dp),
+                        onClick = onLikeMethod
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(text = "Like")
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Card(
+                        modifier = Modifier
+                            .width(55.dp)
+                            .height(55.dp),
+                        onClick = onDislikeMethod
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(text = "Dislike")
+                        }
+                    }
+                }
             }
         }
     }
