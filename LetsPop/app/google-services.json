@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1004596859779",
+    "project_id": "let-s-pop-52a67",
+    "storage_bucket": "let-s-pop-52a67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004596859779:android:272eeefc2545b371b25cb6",
+        "android_client_info": {
+          "package_name": "kr.co.donghyun.letspop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004596859779-sukkl5p91utuc80dv21tiq7ccnodnfjm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtck4boDtwinl2dmcN8PvKTHGIttOPvOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004596859779-sukkl5p91utuc80dv21tiq7ccnodnfjm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
